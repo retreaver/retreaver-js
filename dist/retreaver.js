@@ -1013,10 +1013,10 @@
                 for (var primary_key in numbers) {
                     var number = numbers[primary_key];
                     if (number.is_active === 'true') {
-                        if (typeof(grouped[number.campaign_key]) === 'undefined'){
-                          grouped[number.campaign_key] = [];
-                          grouped[number.campaign_key]['ids'] = [];
-                          grouped[number.campaign_key]['hashes'] = [];
+                        if (typeof(grouped[number.campaign_key]) === 'undefined') {
+                            grouped[number.campaign_key] = [];
+                            grouped[number.campaign_key]['ids'] = [];
+                            grouped[number.campaign_key]['hashes'] = [];
                         }
                         grouped[number.campaign_key]['ids'].push(number.id);
                         grouped[number.campaign_key]['hashes'].push(number.id_checksum);
@@ -1146,4 +1146,6 @@
     };
     Campaign.prototype = new Retreaver.Base.Model();
     Retreaver.Campaign = Campaign;
-})();
+})();;(function (context) {
+    context.Callpixels = window.Retreaver;
+})(window);
