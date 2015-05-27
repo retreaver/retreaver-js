@@ -108,6 +108,6 @@
         if (typeof(primary_key) !== 'undefined') Model.primary_keys[type] = primary_key;
         // return value
         return Model.primary_keys[type];
-    }
+    };
     Retreaver.Base.Model = Model;
 })();
