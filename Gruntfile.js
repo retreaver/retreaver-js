@@ -8,6 +8,7 @@ module.exports = function (grunt) {
             },
             dist: {
                 src: [
+                    'src/retreaver.js',
                     'src/retreaver/base/helpers.js',
                     'src/retreaver/base/cookies.js',
                     'src/retreaver/base/base64.js',

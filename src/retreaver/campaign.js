@@ -39,7 +39,7 @@
         self.request_number = function (tags, callback, error_callback) {
             // if the first argument is a function, the user has decided to skip passing tags
             // therefore cascade the arguments upwards so that everything works as expected
-            if (typeof(tags) === 'function'){
+            if (typeof(tags) === 'function') {
                 // argument 3 becomes argument 2
                 error_callback = callback;
                 // argument 2 becomes argument 1

@@ -5,6 +5,7 @@
     "source": {
         "include": [
             "config/README",
+            "src/retreaver.js",
             "src/retreaver/number.js",
             "src/retreaver/campaign.js"
         ],
