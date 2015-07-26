@@ -11,7 +11,7 @@
          * @param {Object} options
          * @param {String} options.host - Retreaver API Host
          * @example
-         * Retreaver.configure({host: 'api.retreaver.com'});
+         * Retreaver.configure({host: 'api.rtvrapi.com'});
          *
          */
         configure: function (options) {
