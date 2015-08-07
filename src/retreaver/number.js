@@ -9,8 +9,11 @@
      * @property {Number} attributes.id - The CallPixels internal number ID.
      * @property {String} attributes.formatted_number - Nationally formatted phone number.
      * @property {String} attributes.number - E.164 formatted phone number.
+     * @property {String} attributes.extension - The extension number.
      * @property {String} attributes.plain_number - The unformatted phone number digits.
+     * @property {String} attributes.human_number - The phone number digits with extension.
      * @property {Boolean} attributes.target_open - Whether there is an open, available target.
+
      */
     Retreaver.Number = function (options) {
 
