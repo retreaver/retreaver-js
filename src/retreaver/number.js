@@ -11,7 +11,7 @@
      * @property {String} attributes.number - E.164 formatted phone number.
      * @property {String} attributes.extension - The extension number.
      * @property {String} attributes.plain_number - The unformatted phone number digits.
-     * @property {String} attributes.human_number - The phone number digits with extension.
+     * @property {String} attributes.number_extension - The phone number digits with extension.
      * @property {Boolean} attributes.target_open - Whether there is an open, available target.
 
      */
