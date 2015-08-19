@@ -10,8 +10,9 @@
          * @memberof Retreaver
          * @param {Object} options
          * @param {String} options.host - Retreaver API Host
+         * @param {String} options.prefix - http or https
          * @example
-         * Retreaver.configure({host: 'api.rtvrapi.com'});
+         * Retreaver.configure({host: 'api.rtvrapi.com', prefix: 'https'});
          *
          */
         configure: function (options) {
@@ -20,6 +21,10 @@
                 http_prefix: 'http',
                 urlregex: "/\\/\\/[^\\/]*\\/(.*)/"
             };
+            // check for http prefix
+            if (typeof(options.prefix) !== 'undefined') {
+                params.http_prefix = options.prefix;
+            }
             window.Retreaver._connection = new Retreaver.Base.Request(params);
         }
     };
@@ -875,7 +880,7 @@
      * @property {String} attributes.number - E.164 formatted phone number.
      * @property {String} attributes.extension - The extension number.
      * @property {String} attributes.plain_number - The unformatted phone number digits.
-     * @property {String} attributes.human_number - The phone number digits with extension.
+     * @property {String} attributes.number_extension - The phone number digits with extension.
      * @property {Boolean} attributes.target_open - Whether there is an open, available target.
 
      */
