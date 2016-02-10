@@ -207,7 +207,8 @@
     };
     Request.connection = function () {
         if (typeof window.Retreaver._connection === 'undefined') {
-            window.Retreaver._connection = new Retreaver.Base.Request({addr: 'api.rtvrapi.com', http_prefix: 'http', urlregex: "/\\/\\/[^\\/]*\\/(.*)/" });
+            var protocol = window.location.protocol.replace(':', '');
+            window.Retreaver._connection = new Retreaver.Base.Request({addr: 'api.rtvrapi.com', http_prefix: protocol, urlregex: "/\\/\\/[^\\/]*\\/(.*)/" });
         }
         return window.Retreaver._connection;
     };
