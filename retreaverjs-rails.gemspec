@@ -6,8 +6,8 @@ require 'retreaverjs/rails/version'
 Gem::Specification.new do |spec|
   spec.name          = "retreaverjs-rails"
   spec.version       = Retreaver::Rails::VERSION
-  spec.authors       = ["Blake Hilscher"]
-  spec.email         = ["blake@hilscher.ca"]
+  spec.authors       = ['Blake Hilscher', 'Jason Kay']
+  spec.email         = ['blake@hilscher.ca', 'jason@retreaver.com']
   spec.summary       = %q{retreaver.js rails wrapper}
   spec.description   = %q{retreaver.js rails wrapper}
   spec.homepage      = ""

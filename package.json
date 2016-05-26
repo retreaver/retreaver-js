@@ -1,7 +1,7 @@
 {
   "name": "retreaver",
   "description": "Retreaver Javascript API",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "https://github.com/retreaver/retreaverjs",
   "repository": {
     "type": "git",
@@ -20,6 +20,11 @@
       "name": "Blake Hilscher",
       "email": "blake@hilscher.ca",
       "url": "http://blake.hilscher.ca/"
+    },
+    {
+      "name": "Jason Kay",
+      "email": "jason@retreaver.com",
+      "url": "http://retreaver.com/"
     }
   ],
   "licenses": [
@@ -32,15 +37,14 @@
   "engines": {
     "node": ">= 0.6.x"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "jsdoc": "~3.2.2",
+    "grunt": "^1.0.1",
+    "grunt-contrib-concat": "~0.4.0",
     "grunt-contrib-jshint": "~0.10.0",
     "grunt-contrib-nodeunit": "~0.4.1",
     "grunt-contrib-uglify": "~0.5.0",
     "grunt-contrib-watch": "~0.6.1",
-    "grunt-contrib-concat": "~0.4.0"
+    "jsdoc": "~3.2.2"
   }
 }

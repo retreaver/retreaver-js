@@ -84,14 +84,23 @@
 
                 try {
                     ga(function (tracker) {
-                        var clientId = tracker.get('clientId');
-                        var allTrackers = eval('ga.getAll()');
-                        ga_acct = allTrackers[0].get('trackingId');
+                        if (tracker && tracker.get) {
+                            try {
+                                var clientId = tracker.get('clientId');
+                                var allTrackers = eval('ga.getAll()');
+                                ga_acct = allTrackers[0].get('trackingId');
 
-                        var ga_cookies = {};
-                        ga_cookies['__utma'] = clientId;
-                        ga_cookies['mp'] = 'yes';
-                        sendGARequest(ga_acct, ga_cookies);
+                                var ga_cookies = {};
+                                ga_cookies['__utma'] = clientId;
+                                ga_cookies['mp'] = 'yes';
+                                sendGARequest(ga_acct, ga_cookies);
+                            } catch (g) {
+                                sendGARequest('', {});
+                            }
+                        } else {
+                            // tracker is null
+                            sendGARequest('', {});
+                        }
                     });
 
                 } catch (f) {
@@ -134,7 +143,7 @@
                 // pair to the URL struct using the pre-equals
                 // value as the key.
                 function ($0, $1, $2, $3) {
-                    objURL[ $1.toLowerCase() ] = $3;
+                    objURL[$1.toLowerCase()] = $3;
                 }
             );
 
