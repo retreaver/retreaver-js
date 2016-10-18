@@ -1,4 +1,4 @@
-(function () {
+(function() {
     // Dependencies
     var RequestNumber = Retreaver.Base.RequestNumber;
     /**
@@ -9,11 +9,32 @@
      * @example
      * var campaign = new Retreaver.Campaign({ campaign_key: '67d9fb1917ae8f4eaff36831b41788c3' });
      */
-    var Campaign = function (options) {
+    var Campaign = function(options) {
 
         function initialize(data) {
             // initialize data store
             self.store(data);
+        }
+
+        function find_and_replace_number(replacement_numbers) {
+            for (i = 0; i < replacement_numbers.length; i++) {
+                rn = replacement_numbers[i];
+
+                Retreaver.Vendor.findAndReplaceDOMText(document.getElementsByTagName('body')[0], {
+                    find: rn['find'],
+                    replace: rn['replace_with']
+                });
+
+                var links = document.getElementsByTagName('a');
+                for (j = 0; j < links.length; j++) {
+                    link = links[j];
+                    href = link.getAttribute('href');
+                    match = href.match(/tel:(.*)/);
+                    if (match && match[1] === rn['find']) {
+                        link.setAttribute('href', 'tel:' + rn['replace_with']);
+                    }
+                }
+            }
         }
 
         var self = this;
@@ -36,7 +57,7 @@
          *   alert('something went wrong: ' + response);
          * };
          */
-        self.request_number = function (tags, callback, error_callback) {
+        self.request_number = function(tags, callback, error_callback) {
             // if the first argument is a function, the user has decided to skip passing tags
             // therefore cascade the arguments upwards so that everything works as expected
             if (typeof(tags) === 'function') {
@@ -50,11 +71,17 @@
             // assign the tags (this is important since it runs it through set_number_matching_tags)
             self.set('number_matching_tags', tags);
             // request the number
-            new RequestNumber(self.get('campaign_key', 'number_matching_tags')).perform(function (data) {
+            new RequestNumber(self.get('campaign_key', 'number_matching_tags')).perform(function(data) {
                 // did retreaver return a valid number?
                 if (typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && data.number !== '') {
                     // initialize number
                     var number = new Retreaver.Number(data.number);
+
+                    // if there is a replacement in the response, replace all occurances
+                    // of that number on the page with the retreaver number
+                    if (typeof(data.number.replacement_numbers) !== 'undefined') {
+                        find_and_replace_number(data.number.replacement_numbers);
+                    }
                     // call callback
                     callback.apply(self, [number]);
                 }
@@ -70,7 +97,7 @@
          * @param {Retreaver.Number} - The number that was returned
          */
 
-        self.numbers = function () {
+        self.numbers = function() {
             var output = [];
             if (typeof(Retreaver.Base.Data._store) !== 'undefined') {
                 // get numbers
@@ -89,14 +116,13 @@
             return output;
         };
 
-        self.set_number_matching_tags = function (tags) {
+        self.set_number_matching_tags = function(tags) {
             if (typeof(tags) === 'string') {
                 tags = Retreaver.Number.extract_tags_from_string(tags);
             }
             if (tags && (typeof tags === "object") && !(tags instanceof Array)) {
                 return tags
-            }
-            else {
+            } else {
                 throw "ArgumentError: Expected number_matching_tags to be an object. eg: {tag: 'value'}";
             }
         };
