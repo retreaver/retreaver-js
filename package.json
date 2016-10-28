@@ -38,6 +38,7 @@
     "node": ">= 0.6.x"
   },
   "dependencies": {
+    "findandreplacedomtext": "^0.4.4"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

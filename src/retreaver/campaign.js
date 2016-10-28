@@ -16,6 +16,27 @@
             self.store(data);
         }
 
+        function find_and_replace_number(replacement_numbers) {
+            for (i = 0; i < replacement_numbers.length; i++) {
+                rn = replacement_numbers[i];
+
+                Retreaver.Vendor.findAndReplaceDOMText(document.getElementsByTagName('body')[0], {
+                    find: rn['find'],
+                    replace: rn['replace_with']
+                });
+
+                var links = document.getElementsByTagName('a');
+                for (j = 0; j < links.length; j++) {
+                    link = links[j];
+                    href = link.getAttribute('href');
+                    match = href.match(/tel:(.*)/);
+                    if (match && match[1] === rn['find']) {
+                        link.setAttribute('href', 'tel:' + rn['replace_with']);
+                    }
+                }
+            }
+        }
+
         var self = this;
         self.type = 'campaigns';
         self.primary_key('campaign_key');
@@ -55,6 +76,12 @@
                 if (typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && data.number !== '') {
                     // initialize number
                     var number = new Retreaver.Number(data.number);
+
+                    // if there is a replacement in the response, replace all occurances
+                    // of that number on the page with the retreaver number
+                    if (typeof(data.number.replacement_numbers) !== 'undefined') {
+                        find_and_replace_number(data.number.replacement_numbers);
+                    }
                     // call callback
                     callback.apply(self, [number]);
                 }
@@ -64,6 +91,35 @@
                 }
             });
         };
+
+        /**
+         * Auto replace all numbers on page according to campaign settings
+         * Calls campaign.request_number
+         * @memberOf Retreaver.Campaign
+         * @function auto_replace_number
+         * @instance
+         * @param {getNumberCallback} callback - Callback fired if the request completes successfully.
+         * @param {Function} error_callback - Callback fired if the request raises an error.
+         * @example
+         * campaign.auto_replace_number({calling_about: 'support'}, function (number) {
+         *   alert(number.get('number'))
+         * }, function(response){
+         *   alert('something went wrong: ' + response);
+         * };
+         */
+        self.auto_replace_numbers = function (callback, error_callback) {
+            if (typeof callback === 'undefined') {
+                callback = function () {
+                };
+            }
+
+            if (typeof error_callback === 'undefined') {
+                error_callback = function () {
+                };
+            }
+            self.request_number({}, callback, error_callback);
+        };
+
         /**
          * Retreaver.Campaign#request_number callback fired after the request completes.
          * @callback getNumberCallback
@@ -95,8 +151,7 @@
             }
             if (tags && (typeof tags === "object") && !(tags instanceof Array)) {
                 return tags
-            }
-            else {
+            } else {
                 throw "ArgumentError: Expected number_matching_tags to be an object. eg: {tag: 'value'}";
             }
         };
