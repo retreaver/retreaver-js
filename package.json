@@ -25,6 +25,11 @@
       "name": "Jason Kay",
       "email": "jason@retreaver.com",
       "url": "http://retreaver.com/"
+    },
+    {
+      "name": "Ahmed El-Daly",
+      "email": "aeldaly@gmail.com",
+      "url": "http://retreaver.com/"
     }
   ],
   "licenses": [
@@ -38,7 +43,6 @@
     "node": ">= 0.6.x"
   },
   "dependencies": {
-    "findandreplacedomtext": "^0.4.4"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
