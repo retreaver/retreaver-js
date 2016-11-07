@@ -1158,6 +1158,12 @@
                 // argument 1 becomes an empty tags object
                 tags = {};
             }
+
+            if (typeof callback === 'undefined') {
+                callback = function () {
+                };
+            }
+
             // assign the tags (this is important since it runs it through set_number_matching_tags)
             self.set('number_matching_tags', tags);
             // request the number
@@ -1197,7 +1203,7 @@
          *   alert('something went wrong: ' + response);
          * };
          */
-        self.auto_replace_numbers = function(callback, error_callback) {
+        self.auto_replace_numbers = function(tags, callback, error_callback) {
             if (typeof callback === 'undefined') {
                 callback = function() {};
             }
@@ -1205,7 +1211,7 @@
             if (typeof error_callback === 'undefined') {
                 error_callback = function() {};
             }
-            self.request_number({}, callback, error_callback);
+            self.request_number(tags, callback, error_callback);
         };
 
         /**
