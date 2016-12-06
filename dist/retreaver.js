@@ -1164,6 +1164,10 @@
                 };
             }
 
+            if (typeof tags === 'undefined') {
+                tags = {};
+            }
+
             // assign the tags (this is important since it runs it through set_number_matching_tags)
             self.set('number_matching_tags', tags);
             // request the number
