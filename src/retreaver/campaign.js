@@ -115,7 +115,7 @@
          * @param {getNumberCallback} callback - Callback fired if the request completes successfully.
          * @param {Function} error_callback - Callback fired if the request raises an error.
          * @example
-         * campaign.auto_replace_number({calling_about: 'support'}, function (number) {
+         * campaign.auto_replace_numbers({calling_about: 'support'}, function (number) {
          *   alert(number.get('number'))
          * }, function(response){
          *   alert('something went wrong: ' + response);
