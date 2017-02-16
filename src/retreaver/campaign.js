@@ -50,7 +50,7 @@
          * @memberOf Retreaver.Campaign
          * @function request_number
          * @instance
-         * @param {Object} tags - A collection of tags as key-value pairs. The number returned will match these tags.
+         * @param {Object} [tags] - A collection of tags as key-value pairs. The number returned will match these tags.
          * @param {getNumberCallback} callback - Callback fired if the request completes successfully.
          * @param {Function} error_callback - Callback fired if the request raises an error.
          * @example
@@ -109,8 +109,9 @@
          * Auto replace all numbers on page according to campaign settings
          * Calls campaign.request_number
          * @memberOf Retreaver.Campaign
-         * @function auto_replace_number
+         * @function auto_replace_numbers
          * @instance
+         * @param {Object} [tags] - A collection of tags as key-value pairs. The number returned will match these tags.
          * @param {getNumberCallback} callback - Callback fired if the request completes successfully.
          * @param {Function} error_callback - Callback fired if the request raises an error.
          * @example

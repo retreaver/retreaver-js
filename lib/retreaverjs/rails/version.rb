@@ -1,5 +1,5 @@
 module Retreaver
   module Rails
-    VERSION = '0.2.9'
+    VERSION = '0.2.10'
   end
 end

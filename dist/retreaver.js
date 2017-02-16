@@ -920,6 +920,22 @@
         };
 
         /**
+         * Replace tags on a number. Any tags that already exist on the number that match the given keys will be
+         * removed. This can be used instead of calling remove_tags and then add_tags.
+         * @memberOf Retreaver.Number
+         * @function replace_tags
+         * @instance
+         * @param {Object} tags - A collection of tags {key: 'value', tag2: 'value2'}
+         * @param {Function} callback - Callback that will be fired after request.
+         * @throws Will throw an error if attempting to modify tags on a number that doesn't belong to a number pool
+         * with per-visitor numbers enabled.
+         */
+        self.replace_tags = function (tags, callback) {
+            ensure_is_per_visitor();
+            self.post_data('numbers/replace_tags', tags_payload(tags), callback);
+        };
+
+        /**
          * Remove tags from a number.
          * @memberOf Retreaver.Number
          * @function remove_tags
@@ -1137,7 +1153,7 @@
          * @memberOf Retreaver.Campaign
          * @function request_number
          * @instance
-         * @param {Object} tags - A collection of tags as key-value pairs. The number returned will match these tags.
+         * @param {Object} [tags] - A collection of tags as key-value pairs. The number returned will match these tags.
          * @param {getNumberCallback} callback - Callback fired if the request completes successfully.
          * @param {Function} error_callback - Callback fired if the request raises an error.
          * @example
@@ -1196,8 +1212,9 @@
          * Auto replace all numbers on page according to campaign settings
          * Calls campaign.request_number
          * @memberOf Retreaver.Campaign
-         * @function auto_replace_number
+         * @function auto_replace_numbers
          * @instance
+         * @param {Object} [tags] - A collection of tags as key-value pairs. The number returned will match these tags.
          * @param {getNumberCallback} callback - Callback fired if the request completes successfully.
          * @param {Function} error_callback - Callback fired if the request raises an error.
          * @example
