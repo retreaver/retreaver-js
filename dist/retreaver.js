@@ -599,18 +599,21 @@
             } else if (Base.ieVersion() == 6 || Base.ieVersion() == 7) {
                 with_ie_scripts(sendXdm);
             } else {
-                var request = new XMLHttpRequest;
+                var request = new XMLHttpRequest();
+
+                request.onload = function () {
+                    runCallbacks(this.responseText);
+                };
 
                 if (payload) {
-                    request.open("POST", request_url, false);
+                    request.open("POST", request_url);
                     request.setRequestHeader("Content-Type", "application/json");
                     request.send(JSON.stringify(payload));
                 } else {
-                    request.open("GET", request_url, false);
+                    request.open("GET", request_url);
                     request.send();
                 }
 
-                runCallbacks(request.responseText);
             }
         };
 
