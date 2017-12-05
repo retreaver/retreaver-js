@@ -744,14 +744,26 @@
                 body['ou'] = ou;
             }
 
+            var ga_acct = 'FAILED',
+                request_ran = false;
+
             function sendGARequest(ga_acct, ga_cookies) {
-                body['ga'] = Base64.encode(ga_acct);
-                body['c'] = Base64.encode(JSON.stringify(ga_cookies));
-                Request.connection().getJSON(request_url, body, callback);
+                if (!request_ran) {
+                    request_ran = true;
+                    body['ga'] = Base64.encode(ga_acct);
+                    body['c'] = Base64.encode(JSON.stringify(ga_cookies));
+                    Request.connection().getJSON(request_url, body, callback);
+                }
             }
 
+            function runRequest() {
+                if (!request_ran) {
+                    request_ran = true;
+                    Request.connection().getJSON(request_url, body, callback);
+                }
+            }
 
-            var ga_acct = 'FAILED';
+            window.setTimeout(runRequest, 1000);
 
             try {
                 _gaq.push(function () {
@@ -785,7 +797,7 @@
 
                 } catch (f) {
                     // Post back with failed ga_acct.
-                    Request.connection().getJSON(request_url, body, callback);
+                    runRequest();
                 }
             }
 
