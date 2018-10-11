@@ -1,7 +1,7 @@
 {
   "name": "retreaver",
   "description": "Retreaver Javascript API",
-  "version": "0.2.11",
+  "version": "0.2.14",
   "homepage": "https://github.com/retreaver/retreaverjs",
   "repository": {
     "type": "git",
@@ -42,8 +42,7 @@
   "engines": {
     "node": ">= 0.6.x"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt": "~0.4.5",
     "jsdoc": "~3.2.2",

@@ -17,8 +17,8 @@
         }
 
         function find_and_replace_number(replacement_numbers) {
-            for (i = 0; i < replacement_numbers.length; i++) {
-                rn = replacement_numbers[i];
+            for (var i = 0; i < replacement_numbers.length; i++) {
+                var rn = replacement_numbers[i];
 
                 Retreaver.Vendor.findAndReplaceDOMText(document.getElementsByTagName('body')[0], {
                     find: rn['find'],
@@ -26,14 +26,14 @@
                 });
 
                 var links = document.getElementsByTagName('a');
-                for (j = 0; j < links.length; j++) {
-                    link = links[j];
-                    href = link.getAttribute('href');
+                for (var j = 0; j < links.length; j++) {
+                    var link = links[j];
+                    var href = link.getAttribute('href');
 
                     if (href !== null) {
-                        match = href.match(/tel:(.*)/);
-                        if (match && match[1] === rn['find']) {
-                            link.setAttribute('href', 'tel:' + rn['replace_with']);
+                        var match = href.match(/^(tel:|clkn\/tel\/)(.*)/);
+                        if (match && match[2] === rn['find']) {
+                            link.setAttribute('href', match[1] + rn['replace_with']);
                         }
                     }
                 }

@@ -39,7 +39,7 @@
             var request = function () {
                 self.apiRequest(request_url, function (data) {
                     // parse
-                    response = JSON.parse(data);
+                    var response = JSON.parse(data);
                     // fire callbacks
                     for (var i in callbacks) {
                         if (typeof callbacks[i] == "function") callbacks[i].apply(context, [response]);

@@ -96,8 +96,7 @@
     };
     Base64._utf8_decode = function (utftext) {
         var string = "";
-        var i = 0;
-        var c = c1 = c2 = 0;
+        var i = 0, c = 0, c2 = 0, c3 = 0;
 
         while (i < utftext.length) {
 
