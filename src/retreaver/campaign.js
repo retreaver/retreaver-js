@@ -31,7 +31,7 @@
                     var href = link.getAttribute('href');
 
                     if (href !== null) {
-                        var match = href.match(/^(tel:|clkn\/tel\/)(.*)/);
+                        var match = href.match(/^(tel:|clk[a-z]\/tel\/)(.*)/);
                         if (match && match[2] === rn['find']) {
                             link.setAttribute('href', match[1] + rn['replace_with']);
                         }
