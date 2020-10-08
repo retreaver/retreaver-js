@@ -1135,6 +1135,17 @@
             self.store(data);
         }
 
+        /**
+         * String.prototype.trim() polyfill
+         * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/Trim#Polyfill
+         * @param {String} string
+         * @returns {String} string
+         */
+        function trim(string) {
+            if (typeof string !== 'string') return '';
+            return string.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+        }
+
         function find_and_replace_number(replacement_numbers) {
             for (var i = 0; i < replacement_numbers.length; i++) {
                 var rn = replacement_numbers[i];
@@ -1151,7 +1162,7 @@
 
                     if (href !== null) {
                         var match = href.match(/^(tel:|clk[a-z]\/tel\/)(.*)/);
-                        if (match && match[2] === rn['find']) {
+                        if (match && trim(match[2]) === rn['find']) {
                             link.setAttribute('href', match[1] + rn['replace_with']);
                         }
                     }
