@@ -1314,16 +1314,8 @@ if (typeof(Retreaver.Vendor) === 'undefined') {
 }
 
  (function (root, factory) {
-     if (typeof module === 'object' && module.exports) {
-         // Node/CommonJS
-         module.exports = factory();
-     } else if (typeof define === 'function' && define.amd) {
-         // AMD. Register as an anonymous module.
-         define(factory);
-     } else {
-         // Browser globals
-         root.findAndReplaceDOMText = factory();
-     }
+   // Browser globals
+   root.findAndReplaceDOMText = factory();
  }(Retreaver.Vendor, function factory() {
 
   var PORTION_MODE_RETAIN = 'retain';
