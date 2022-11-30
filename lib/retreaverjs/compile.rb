@@ -6,7 +6,7 @@ module Retreaver
         Dir.chdir(root) do |f|
           run("npm install") unless Dir.exist?('./node_modules')
           # compile src
-          run("grunt")
+          run("npx grunt-cli -y")
           output = 'vendor/assets/javascripts/'
           FileUtils.rm_rf(output)
           FileUtils.mkdir_p(output)
@@ -20,7 +20,13 @@ module Retreaver
 
       def run(command)
         puts(command)
-        system(command)
+        system_with_abort(command)
+      end
+
+      def system_with_abort(command, abort_message=nil)
+        system(command, out: $stdout, err: :out)
+        abort_message ||= "Error executing: '#{command}'"
+        abort abort_message unless $?.success?
       end
 
       def root
