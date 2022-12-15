@@ -6,7 +6,7 @@ module Retreaver
         Dir.chdir(root) do |f|
           run("npm install") unless Dir.exist?('./node_modules')
           # compile src
-          run("npx grunt-cli -y")
+          run("npx --yes grunt-cli")
           output = 'vendor/assets/javascripts/'
           FileUtils.rm_rf(output)
           FileUtils.mkdir_p(output)
