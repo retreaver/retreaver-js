@@ -151,6 +151,41 @@
             self.post_data('numbers/initiate_call', payload, callback);
         };
 
+        /**
+         * Attach screenshot service to replaced links
+         * @memberOf Retreaver.Number
+         * @function track_inbound_call_origination
+         * @instance
+         * @param {Array<HTMLCollectionOf<HTMLAnchorElement>>} number_links - An array of links to the number that when clicked trigger the service
+         * @example
+         * TODO
+         * number.track_inbound_call_origination([document.getElementById('some-id-from-campaing-пример')
+         */
+
+        self.track_inbound_call_origination = function(number_links) {
+            // Attaching to all links provided
+            for (var index = 0; index < number_links.length; index++) {
+                number_links[index].addEventListener('click', function(event) {
+                    event.preventDefault();
+                    self.take_screenshot_and_tag_number();
+                });
+            }
+        }
+
+        self.take_screenshot_and_tag_number = function() {
+            Retreaver.Vendor.html2canvas(document.getElementsByTagName("html")[0]).then(function(canvas) {
+                canvas.toBlob(function(blob) {
+                    options = self.get('presigned_url') || {}
+                    options.body = blob
+
+                    self.replace_tags({system_inbound_origination_id: options.system_inbound_origination_id})
+                    delete options.system_inbound_origination_id
+
+                    fetch(options.url, options)
+                })
+            }, 'image/png');
+        }
+
         function tags_payload(tags) {
             if (typeof(tags) === 'string') tags = Retreaver.Number.extract_tags_from_string(tags);
             return {

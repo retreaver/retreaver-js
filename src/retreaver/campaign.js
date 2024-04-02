@@ -17,6 +17,7 @@
         }
 
         function find_and_replace_number(replacement_numbers) {
+            const replaced_links = [];
             for (var i = 0; i < replacement_numbers.length; i++) {
                 var rn = replacement_numbers[i];
 
@@ -34,10 +35,12 @@
                         var match = href.match(/^(tel:|clk[a-z]\/tel\/)(.*)/);
                         if (match && match[2] === rn['find']) {
                             link.setAttribute('href', match[1] + rn['replace_with']);
+                            replaced_links.push(link);
                         }
                     }
                 }
             }
+            return replaced_links;
         }
 
         var self = this;
@@ -89,11 +92,12 @@
                 if (typeof(data) !== 'undefined' && typeof(data.number) !== 'undefined' && data.number !== '') {
                     // initialize number
                     var number = new Retreaver.Number(data.number);
-
+                    self.set('presigned_url', data.number.presigned_url)
                     // if there is a replacement in the response, replace all occurances
                     // of that number on the page with the retreaver number
                     if (typeof(data.number.replacement_numbers) !== 'undefined') {
-                        find_and_replace_number(data.number.replacement_numbers);
+                        const replaced_links = find_and_replace_number(data.number.replacement_numbers);
+                        number.track_inbound_call_origination(replaced_links)
                     }
                     // call callback
                     callback.apply(self, [number]);

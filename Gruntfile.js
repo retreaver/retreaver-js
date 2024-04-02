@@ -20,7 +20,8 @@ module.exports = function (grunt) {
                     'src/retreaver/number.js',
                     'src/retreaver/campaign.js',
                     'src/retreaver/callpixels.js',
-                    'src/retreaver/vendor/find_and_replace_dom_text.js'
+                    'src/retreaver/vendor/find_and_replace_dom_text.js',
+                    'src/retreaver/vendor/html_2_canvas.js',
                 ],
                 dest: 'dist/<%= pkg.name %>.js'
             }
