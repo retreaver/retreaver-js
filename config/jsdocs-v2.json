@@ -5,16 +5,16 @@
     "source": {
         "include": [
             "config/README",
-            "src/retreaver.js",
-            "src/retreaver/number.js",
-            "src/retreaver/campaign.js"
+            "src/v2/retreaver.js",
+            "src/v2/retreaver/number.js",
+            "src/v2/retreaver/campaign.js"
         ],
         "exclude": [],
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/|\\\\)_"
     },
     "opts": {
-        "destination": "./vendor/documentation/javascript/v1/"
+        "destination": "./vendor/documentation/javascript/v2/"
     },
     "plugins": [],
     "templates": {
