@@ -6,32 +6,55 @@ module.exports = function (grunt) {
             options: {
                 separator: ';'
             },
-            dist: {
+            dist_v1: {
                 src: [
-                    'src/retreaver.js',
-                    'src/retreaver/base/helpers.js',
-                    'src/retreaver/base/cookies.js',
-                    'src/retreaver/base/base64.js',
-                    'src/retreaver/base/data.js',
-                    'src/retreaver/base/model.js',
-                    'src/retreaver/base/request.js',
-                    'src/retreaver/base/request_number.js',
-                    'src/retreaver/cache.js',
-                    'src/retreaver/number.js',
-                    'src/retreaver/campaign.js',
-                    'src/retreaver/callpixels.js',
-                    'src/retreaver/vendor/find_and_replace_dom_text.js'
+                    'src/v1/retreaver.js',
+                    'src/v1/retreaver/base/helpers.js',
+                    'src/v1/retreaver/base/cookies.js',
+                    'src/v1/retreaver/base/base64.js',
+                    'src/v1/retreaver/base/data.js',
+                    'src/v1/retreaver/base/model.js',
+                    'src/v1/retreaver/base/request.js',
+                    'src/v1/retreaver/base/request_number.js',
+                    'src/v1/retreaver/cache.js',
+                    'src/v1/retreaver/number.js',
+                    'src/v1/retreaver/campaign.js',
+                    'src/v1/retreaver/callpixels.js',
+                    'src/v1/retreaver/vendor/find_and_replace_dom_text.js'
                 ],
-                dest: 'dist/<%= pkg.name %>.js'
-            }
+                dest: 'dist/v1/<%= pkg.name %>.js'
+            },
+            dist_v2: {
+                src: [
+                    'src/v2/retreaver.js',
+                    'src/v2/retreaver/base/helpers.js',
+                    'src/v2/retreaver/base/cookies.js',
+                    'src/v2/retreaver/base/base64.js',
+                    'src/v2/retreaver/base/data.js',
+                    'src/v2/retreaver/base/model.js',
+                    'src/v2/retreaver/base/request.js',
+                    'src/v2/retreaver/base/request_number.js',
+                    'src/v2/retreaver/cache.js',
+                    'src/v2/retreaver/number.js',
+                    'src/v2/retreaver/campaign.js',
+                    'src/v2/retreaver/callpixels.js',
+                    'src/v2/retreaver/vendor/find_and_replace_dom_text.js'
+                ],
+                dest: 'dist/v2/<%= pkg.name %>.js'
+            },
         },
         uglify: {
             options: {
                 banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
             },
-            dist: {
+            dist_v1: {
                 files: {
-                    'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+                    'dist/v1/<%= pkg.name %>.min.js': ['<%= concat.dist_v1.dest %>']
+                }
+            },
+            dist_v2: {
+                files: {
+                    'dist/v2/<%= pkg.name %>.min.js': ['<%= concat.dist_v2.dest %>']
                 }
             }
         },

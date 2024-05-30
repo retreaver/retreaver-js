@@ -10,11 +10,12 @@ module Retreaver
           output = 'vendor/assets/javascripts/'
           FileUtils.rm_rf(output)
           FileUtils.mkdir_p(output)
-          Dir.glob('dist/*.js') { |f| FileUtils.cp(f, output) }
+          Dir.glob('dist/v*') { |f| FileUtils.cp_r(f, output) }
           # generate jsdocs
           output = 'vendor/documentation/javascripts/'
           FileUtils.rm_rf(output)
-          run("./node_modules/.bin/jsdoc -c config/jsdocs.json")
+          run("./node_modules/.bin/jsdoc -c config/jsdocs-v1.json")
+          run("./node_modules/.bin/jsdoc -c config/jsdocs-v2.json")
         end
       end
 
