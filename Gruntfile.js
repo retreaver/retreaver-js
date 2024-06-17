@@ -24,23 +24,23 @@ module.exports = function (grunt) {
                 ],
                 dest: 'dist/v1/<%= pkg.name %>.js'
             },
-            dist_v2: {
+            dist_dev: {
                 src: [
-                    'src/v2/retreaver.js',
-                    'src/v2/retreaver/base/helpers.js',
-                    'src/v2/retreaver/base/cookies.js',
-                    'src/v2/retreaver/base/base64.js',
-                    'src/v2/retreaver/base/data.js',
-                    'src/v2/retreaver/base/model.js',
-                    'src/v2/retreaver/base/request.js',
-                    'src/v2/retreaver/base/request_number.js',
-                    'src/v2/retreaver/cache.js',
-                    'src/v2/retreaver/number.js',
-                    'src/v2/retreaver/campaign.js',
-                    'src/v2/retreaver/callpixels.js',
-                    'src/v2/retreaver/vendor/find_and_replace_dom_text.js'
+                    'src/dev/retreaver.js',
+                    'src/dev/retreaver/base/helpers.js',
+                    'src/dev/retreaver/base/cookies.js',
+                    'src/dev/retreaver/base/base64.js',
+                    'src/dev/retreaver/base/data.js',
+                    'src/dev/retreaver/base/model.js',
+                    'src/dev/retreaver/base/request.js',
+                    'src/dev/retreaver/base/request_number.js',
+                    'src/dev/retreaver/cache.js',
+                    'src/dev/retreaver/number.js',
+                    'src/dev/retreaver/campaign.js',
+                    'src/dev/retreaver/callpixels.js',
+                    'src/dev/retreaver/vendor/find_and_replace_dom_text.js'
                 ],
-                dest: 'dist/v2/<%= pkg.name %>.js'
+                dest: 'dist/dev/<%= pkg.name %>.js'
             },
         },
         uglify: {
@@ -52,9 +52,9 @@ module.exports = function (grunt) {
                     'dist/v1/<%= pkg.name %>.min.js': ['<%= concat.dist_v1.dest %>']
                 }
             },
-            dist_v2: {
+            dist_dev: {
                 files: {
-                    'dist/v2/<%= pkg.name %>.min.js': ['<%= concat.dist_v2.dest %>']
+                    'dist/dev/<%= pkg.name %>.min.js': ['<%= concat.dist_dev.dest %>']
                 }
             }
         },

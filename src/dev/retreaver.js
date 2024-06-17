@@ -1,6 +1,6 @@
 (function (context) {
     /**
-     * @version v2
+     * @version dev
      * @namespace Retreaver
      */
     var Retreaver = {
