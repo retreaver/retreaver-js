@@ -1159,6 +1159,48 @@
             }
         }
 
+        function handle_true_call_integration(number) {
+            const integrations = number.get("integrations");
+
+            if (typeof(integrations) != 'object'){
+                return;
+            }
+
+            const trueCallConfig = integrations["truecall.com"];
+            if (typeof(trueCallConfig) == 'undefined') {
+                return;
+            }
+
+            // Load the trueCall script into the page it it's missing
+            if(!document.getElementById("__tc_script") || !window.TrueCall) {
+                (function () {
+                    const trueCallScriptTag = document.createElement('script');
+                    trueCallScriptTag.type = 'text/javascript';
+                    trueCallScriptTag.async = true;
+                    trueCallScriptTag.defer = true;
+                    trueCallScriptTag.dataset.tc_campaign_id = trueCallConfig["tcCampaignId"];
+                    trueCallScriptTag.id = "__tc_script"
+                    trueCallScriptTag.src = trueCallConfig["scriptSrc"];
+                    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(trueCallScriptTag);
+                })();
+            }
+
+            const obtainTrueCallId = new Promise(function(resolve) {
+                const trueCallInterval = setInterval(function() {
+                    if (window.TrueCall && window.TrueCall.getId()) {
+                        resolve(window.TrueCall.getId())
+                        clearInterval(trueCallInterval);
+                    }
+                }, trueCallConfig["checkIntervalMs"]); // Try to get the trueCallId every X milliseconds
+            })
+
+            obtainTrueCallId.then(function (trueCallId) {
+                const tags = {};
+                tags[trueCallConfig["tagName"]] = trueCallId;
+                number.replace_tags(tags);
+            });
+        }
+
         var self = this;
         self.type = 'campaigns';
         self.primary_key('campaign_key');
@@ -1209,7 +1251,13 @@
                     // initialize number
                     var number = new Retreaver.Number(data.number);
 
-                    // if there is a replacement in the response, replace all occurances
+                    try {
+                        handle_true_call_integration(number);
+                    } catch (e) {
+                        console.error("Could not integrate with truecall.com, ", e);
+                    }
+
+                    // if there is a replacement in the response, replace all occurrences
                     // of that number on the page with the retreaver number
                     if (typeof(data.number.replacement_numbers) !== 'undefined') {
                         find_and_replace_number(data.number.replacement_numbers);
