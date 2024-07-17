@@ -40,14 +40,24 @@
             }
         }
 
-        function handle_true_call_integration(number) {
+        function get_integration_config(number, integration) {
             const integrations = number.get("integrations");
 
-            if (typeof(integrations) != 'object'){
+            if (typeof(integrations) != 'object') {
                 return;
             }
 
-            const trueCallConfig = integrations["truecall.com"];
+            const integrationConfig = integrations[integration];
+            if (typeof(integrationConfig) == 'undefined') {
+                return;
+            }
+
+            return integrationConfig;
+        }
+
+        function handle_true_call_integration(number) {
+            const trueCallConfig = get_integration_config(number, "truecall.com");
+
             if (typeof(trueCallConfig) == 'undefined') {
                 return;
             }
@@ -80,6 +90,39 @@
                 tags[trueCallConfig["tagName"]] = trueCallId;
                 number.replace_tags(tags);
             });
+        }
+
+        function handle_red_track_integration(number) {
+            const redTrackConfig = get_integration_config(number, "red_track");
+
+            if (typeof(redTrackConfig) == 'undefined') {
+                return;
+            }
+
+            function getRedTrackClickID(name) {
+                const value = '; ' + document.cookie;
+                const parts = value.split('; ' + name + '=');
+                if (parts.length == 2) return parts.pop().split(';').shift();
+            }
+
+            const obtainRedTrackClickID = new Promise( function (resolve) {
+                const myInterval = setInterval(function () {
+                    const redTrackClickID = getRedTrackClickID('rtkclickid-store');
+                    if (redTrackClickID) {
+                        resolve(redTrackClickID);
+                        clearInterval(myInterval);
+                    } else {
+                        console.log('Cookie is not there');
+                    }
+                }, redTrackConfig["checkIntervalMs"]);
+            });
+
+            obtainRedTrackClickID.then(function (getRedTrackClickID) {
+                const tags = {};
+                tags[redTrackConfig["tagName"]] = getRedTrackClickID;
+                number.replace_tags(tags);
+            });
+
         }
 
         var self = this;
@@ -136,6 +179,12 @@
                         handle_true_call_integration(number);
                     } catch (e) {
                         console.error("Could not integrate with truecall.com, ", e);
+                    }
+
+                    try {
+                        handle_red_track_integration(number);
+                    } catch (e) {
+                        console.error("Could not integrate with Red Track, ", e);
                     }
 
                     // if there is a replacement in the response, replace all occurrences
