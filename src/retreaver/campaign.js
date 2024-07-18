@@ -110,20 +110,18 @@
                 })();
             }
 
-            const obtainTrueCallId = new Promise(function(resolve) {
-                const trueCallInterval = setInterval(function() {
-                    if (window.TrueCall && window.TrueCall.getId()) {
-                        resolve(window.TrueCall.getId())
+            const trueCallInterval = setInterval(function() {
+                if (window.TrueCall) {
+                    window.TrueCall.setDID(number.get("number")).then(function() {
                         clearInterval(trueCallInterval);
-                    }
-                }, trueCallConfig["checkIntervalMs"]); // Try to get the trueCallId every X milliseconds
-            })
-
-            obtainTrueCallId.then(function (trueCallId) {
-                const tags = {};
-                tags[trueCallConfig["tagName"]] = trueCallId;
-                number.replace_tags(tags);
-            });
+                        return window.TrueCall.getIdAsync();
+                    }).then(function(trueCallId) {
+                        const tags = {};
+                        tags[trueCallConfig["tagName"]] = trueCallId;
+                        number.replace_tags(tags);
+                    });
+                }
+            }, trueCallConfig["checkIntervalMs"]);
         }
 
         var self = this;
