@@ -1159,15 +1159,59 @@
             }
         }
 
-        function handle_true_call_integration(number) {
+        function get_integration_config(number, integration) {
             const integrations = number.get("integrations");
 
-            if (typeof(integrations) != 'object'){
+            if (typeof(integrations) != 'object') {
                 return;
             }
 
-            const trueCallConfig = integrations["truecall.com"];
-            if (typeof(trueCallConfig) == 'undefined') {
+            const integrationConfig = integrations[integration];
+            if (typeof(integrationConfig) == 'undefined') {
+                return;
+            }
+
+            return integrationConfig;
+        }
+
+        function handle_google_analytics_integration(number) {
+            googleAnalyticsConfig = get_integration_config(number, "google_analytics");
+            if (typeof(googleAnalyticsConfig) == "undefined") {
+                return;
+            }
+
+            const obtainGoogleAnalyticsCookies = new Promise(function(resolve) {
+                const googleAnalyticsInterval = setInterval(function() {
+                    const gaSessionIdPattern = /_ga_[^=]+=([^;]*)/;
+                    const gaSessionMatch = document.cookie.match(gaSessionIdPattern);
+                    const gaSessionMatched = gaSessionMatch && gaSessionMatch[1];
+
+                    const gaClientIdPattern = /_ga=([^;]*)/;
+                    const gaClientMatch = document.cookie.match(gaClientIdPattern);
+                    const gaClientMatched = gaClientMatch && gaClientMatch[1];
+
+                    if (gaSessionMatched && gaClientMatched) {
+                        resolve({
+                            gaSessionId: gaSessionMatched,
+                            gaClientId: gaClientMatched,
+                        });
+
+                        clearInterval(googleAnalyticsInterval);
+                    }
+                }, googleAnalyticsConfig["checkIntervalMs"]); // Try to get the Google Analytics session data every X milliseconds
+            })
+
+            obtainGoogleAnalyticsCookies.then(function (sessionData) {
+                number.replace_tags({
+                    ga_session_id: sessionData.gaSessionId,
+                    ga_client_id: sessionData.gaClientId,
+                });
+            });
+        }
+
+        function handle_true_call_integration(number) {
+            trueCallConfig = get_integration_config(number, "truecall.com");
+            if (typeof(trueCallConfig) == "undefined") {
                 return;
             }
 
@@ -1255,6 +1299,12 @@
                         handle_true_call_integration(number);
                     } catch (e) {
                         console.error("Could not integrate with truecall.com, ", e);
+                    }
+
+                    try {
+                        handle_google_analytics_integration(number);
+                    } catch (e) {
+                        console.error("Could not integrate with google analytics, ", e);
                     }
 
                     // if there is a replacement in the response, replace all occurrences
