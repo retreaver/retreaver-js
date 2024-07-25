@@ -91,7 +91,8 @@
         }
 
         function handle_true_call_integration(number) {
-            trueCallConfig = get_integration_config(number, "truecall.com");
+            const trueCallConfig = get_integration_config(number, "truecall.com");
+
             if (typeof(trueCallConfig) == "undefined") {
                 return;
             }
@@ -122,6 +123,37 @@
                     });
                 }
             }, trueCallConfig["checkIntervalMs"]);
+        }
+
+        function handle_red_track_integration(number) {
+            const redTrackConfig = get_integration_config(number, "red_track");
+
+            if (typeof(redTrackConfig) == "undefined") {
+                return;
+            }
+
+            function getRedTrackClickID(name) {
+                const value = '; ' + document.cookie;
+                const parts = value.split('; ' + name + '=');
+                if (parts.length == 2) return parts.pop().split(';').shift();
+            }
+
+            const obtainRedTrackClickID = new Promise( function (resolve) {
+                const myInterval = setInterval(function () {
+                    const redTrackClickID = getRedTrackClickID('rtkclickid-store');
+                    if (redTrackClickID) {
+                        resolve(redTrackClickID);
+                        clearInterval(myInterval);
+                    }
+                }, redTrackConfig["checkIntervalMs"]);
+            });
+
+            obtainRedTrackClickID.then(function (redTrackClickID) {
+                const tags = {};
+                tags[redTrackConfig["tagName"]] = redTrackClickID;
+                number.replace_tags(tags);
+            });
+
         }
 
         var self = this;
@@ -178,6 +210,12 @@
                         handle_true_call_integration(number);
                     } catch (e) {
                         console.error("Could not integrate with truecall.com, ", e);
+                    }
+
+                    try {
+                        handle_red_track_integration(number);
+                    } catch (e) {
+                        console.error("Could not integrate with Red Track, ", e);
                     }
 
                     try {
