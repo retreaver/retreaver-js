@@ -1223,7 +1223,8 @@
                     trueCallScriptTag.type = 'text/javascript';
                     trueCallScriptTag.async = true;
                     trueCallScriptTag.defer = true;
-                    trueCallScriptTag.dataset.tc_campaign_id = trueCallConfig["tcCampaignId"];
+                    trueCallScriptTag.dataset.campaign_uuid = trueCallConfig["tcCampaignUuid"];
+                    trueCallScriptTag.dataset.use_set_did = "1";
                     trueCallScriptTag.id = "__tc_script"
                     trueCallScriptTag.src = trueCallConfig["scriptSrc"];
                     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(trueCallScriptTag);
