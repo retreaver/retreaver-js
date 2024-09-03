@@ -1276,6 +1276,37 @@
 
         }
 
+        function handle_click_flare_integration(number) {
+            const clickFlareConfig = get_integration_config(number, "click_flare");
+
+            if (typeof(clickFlareConfig) == "undefined") {
+                return;
+            }
+
+            const getClickFlareClickID = function() {
+                if (window.clickflare && window.clickflare.data && window.clickflare.data.event_tokens && window.clickflare.data.event_tokens.click_id) {
+                    return window.clickflare.data.event_tokens.click_id;
+                }
+            };
+
+            const obtainClickFlareClickID = new Promise(function (resolve) {
+                const myInterval = setInterval(function () {
+                    const clickFlareClickID = getClickFlareClickID();
+                    if (clickFlareClickID) {
+                        resolve(clickFlareClickID);
+                        clearInterval(myInterval);
+                    }
+                }, clickFlareConfig["checkIntervalMs"]);
+            });
+
+            obtainClickFlareClickID.then(function (clickFlareClickID) {
+                const tags = {};
+                tags[clickFlareConfig["tagName"]] = clickFlareClickID;
+                number.replace_tags(tags);
+            });
+
+        }
+
         var self = this;
         self.type = 'campaigns';
         self.primary_key('campaign_key');
@@ -1342,6 +1373,12 @@
                         handle_google_analytics_integration(number);
                     } catch (e) {
                         console.error("Could not integrate with google analytics, ", e);
+                    }
+
+                    try {
+                        handle_click_flare_integration(number);
+                    } catch (e) {
+                        console.error("Could not integrate with click flare, ", e);
                     }
 
                     // if there is a replacement in the response, replace all occurrences
