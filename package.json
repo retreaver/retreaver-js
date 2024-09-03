@@ -1,7 +1,7 @@
 {
   "name": "retreaver",
   "description": "Retreaver Javascript API",
-  "version": "0.2.23",
+  "version": "0.2.24",
   "homepage": "https://github.com/retreaver/retreaverjs",
   "repository": {
     "type": "git",
