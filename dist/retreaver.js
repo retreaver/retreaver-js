@@ -1284,8 +1284,10 @@
             }
 
             const getClickFlareClickID = function() {
-                if (window.clickflare && window.clickflare.data && window.clickflare.data.event_tokens && window.clickflare.data.event_tokens.click_id) {
-                    return window.clickflare.data.event_tokens.click_id;
+                if (window.clickflare && window.clickflare.data && window.clickflare.data.event_tokens) {
+                    // ClickFlare has this cv_click_id which is an id that when present tracks the user better and takes
+                    // precedent over cf_click_id.
+                    return (window.clickflare.data.event_tokens.cv_click_id || window.clickflare.data.event_tokens.cf_click_id);
                 }
             };
 
