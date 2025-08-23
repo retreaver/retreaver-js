@@ -84,7 +84,7 @@ async function build() {
                 toplevel: false // grunt did NOT mangle toplevel by default
             },
             output: {
-                comments: /^!|@preserve|@license|@cc_on/i, // grunt's regex for keeping banners
+                comments: /^!|@preserve/i, // grunt's regex for keeping banners
                 ascii_only: true
             }
         })
