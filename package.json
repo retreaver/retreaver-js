@@ -36,8 +36,7 @@
   "scripts": {
     "build": "node build.js",
     "docs": "jsdoc -c config/jsdocs.json",
-    "clean": "rm -f dist/retreaver.js dist/retreaver.min.js dist/retreaver.temp.js && rm -rf temp",
-    "serve": "node server.js"
+    "clean": "rm -f dist/retreaver.js dist/retreaver.min.js dist/retreaver.temp.js && rm -rf temp"
   },
   "dependencies": {},
   "devDependencies": {
