@@ -4,17 +4,18 @@ module Retreaver
     class << self
       def perform
         Dir.chdir(root) do |f|
-          run("npm install") unless Dir.exist?('./node_modules')
+          run("yarn install")
           # compile src
-          run("npx --yes grunt-cli")
-          output = 'vendor/assets/javascripts/'
+          run("yarn build")
+          output = "vendor/assets/javascripts/"
           FileUtils.rm_rf(output)
           FileUtils.mkdir_p(output)
           Dir.glob('dist/*.js') { |f| FileUtils.cp(f, output) }
           # generate jsdocs
-          output = 'vendor/documentation/javascripts/'
+          output = "vendor/documentation/javascripts/"
           FileUtils.rm_rf(output)
-          run("./node_modules/.bin/jsdoc -c config/jsdocs.json")
+          FileUtils.mkdir_p(output)
+          run("yarn docs")
         end
       end
 
