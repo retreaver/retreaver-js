@@ -11,24 +11,14 @@
     "url": "https://github.com/retreaver/retreaverjs/issues"
   },
   "author": {
-    "name": "Blake Hilscher",
-    "email": "blake@retreaver.com",
+    "name": "Jason Kay",
+    "email": "support@retreaver.com",
     "url": "http://retreaver.com/"
   },
   "contributors": [
     {
-      "name": "Blake Hilscher",
-      "email": "blake@hilscher.ca",
-      "url": "http://blake.hilscher.ca/"
-    },
-    {
       "name": "Jason Kay",
-      "email": "jason@retreaver.com",
-      "url": "http://retreaver.com/"
-    },
-    {
-      "name": "Ahmed El-Daly",
-      "email": "aeldaly@gmail.com",
+      "email": "support@retreaver.com",
       "url": "http://retreaver.com/"
     }
   ],
