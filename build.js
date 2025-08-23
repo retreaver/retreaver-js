@@ -1,7 +1,8 @@
-import { minify } from '@swc/core'
+import { createRequire } from 'node:module'
 import { mkdir, rm, writeFile, readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import UglifyJS from 'uglify-js';
 
 // # Build for development and production
 // yarn build
@@ -68,8 +69,9 @@ async function build() {
         const devContent = `${banner}\n${concatenated}`
         await writeFile(resolve(distDir, `${outputName}.js`), devContent)
 
-        // Step 3: Create production build (minified) using SWC
-        const minified = await minify(concatenated, {
+        // Step 3: Create production build (minified)
+        const uglifyResult = UglifyJS.minify(concatenated, {
+            fromString: true,
             compress: {
                 dead_code: true,
                 drop_console: false,
@@ -78,13 +80,13 @@ async function build() {
                 passes: 1
             },
             mangle: true,
-            format: {
+            output: {
                 comments: false,
-                asciiOnly: false,
-                preamble: banner,
+                ascii_only: false
             }
         })
-        await writeFile(resolve(distDir, `${outputName}.min.js`), minified.code)
+        if (uglifyResult.error) throw uglifyResult.error
+        await writeFile(resolve(distDir, `${outputName}.min.js`), `${banner}\n${uglifyResult.code}`)
 
         console.log('Build complete!')
         console.log(`   dist/${outputName}.js`)

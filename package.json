@@ -41,7 +41,7 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@swc/core": "1.13.4",
-    "jsdoc": "4.0.4"
+    "jsdoc": "4.0.4",
+    "uglify-js": "2.8.29"
   }
 }
