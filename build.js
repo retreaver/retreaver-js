@@ -71,18 +71,21 @@ async function build() {
 
         // Step 3: Create production build (minified)
         const uglifyResult = UglifyJS.minify(concatenated, {
-            fromString: true,
+            fromString: true, // grunt used this mode
             compress: {
+                warnings: false, // grunt default
                 dead_code: true,
                 drop_console: false,
                 drop_debugger: true,
                 keep_infinity: true,
                 passes: 1
             },
-            mangle: true,
+            mangle: {
+                toplevel: false // grunt did NOT mangle toplevel by default
+            },
             output: {
-                comments: false,
-                ascii_only: false
+                comments: /^!|@preserve|@license|@cc_on/i, // grunt's regex for keeping banners
+                ascii_only: true
             }
         })
         if (uglifyResult.error) throw uglifyResult.error
