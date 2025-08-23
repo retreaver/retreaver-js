@@ -1,3 +1,4 @@
+/*! retreaver v0.2.26 | 2025-08-23 */
 (function (context) {
     /**
      * @namespace Retreaver
@@ -31,7 +32,8 @@
     context.Retreaver = Retreaver;
 
 })(window);
-;(function () {
+;
+(function () {
     // ensure namespace is present
     if (typeof window.Retreaver === 'undefined') window.Retreaver = {};
     var Base = {};
@@ -85,7 +87,8 @@
         return Base._ieVersion;
     };
     Retreaver.Base = Base;
-})();;// https://github.com/evertton/cookiejs
+})();;
+// https://github.com/evertton/cookiejs
 (function (f) {
     var a = function (b, c, d) {
         return 1 === arguments.length ? a.get(b) : a.set(b, c, d)
@@ -143,7 +146,8 @@
         return a
     }) : "undefined" !== typeof exports ? ("undefined" !== typeof module && module.exports && (exports = module.exports = a), exports.Cookies = a) : a;
     Retreaver.Base.Cookies = a;
-})();;// http://www.webtoolkit.info/javascript-base64.html#.U-qwzYBdUwQ
+})();;
+// http://www.webtoolkit.info/javascript-base64.html#.U-qwzYBdUwQ
 (function () {
     var Base64 = {
         _keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/="
@@ -268,7 +272,8 @@
     };
     Retreaver.Base.Base64 = Base64;
 })();
-;(function () {
+;
+(function () {
     // Dependencies
     var Base = Retreaver.Base;
     /**
@@ -348,7 +353,8 @@
     };
     Data._store = {};
     Retreaver.Base.Data = Data;
-})();;(function () {
+})();;
+(function () {
     // Dependencies
     var Base = Retreaver.Base;
     var Data = Retreaver.Base.Data;
@@ -460,7 +466,8 @@
         return Model.primary_keys[type];
     };
     Retreaver.Base.Model = Model;
-})();;(function () {
+})();;
+(function () {
     // Dependencies
     var Base = window.Retreaver.Base;
     var Cookies = window.Retreaver.Base.Cookies;
@@ -679,7 +686,8 @@
     };
     Retreaver.Base.Request = Request;
 })();
-;(function () {
+;
+(function () {
     // Dependencies
     var Base = Retreaver.Base;
     var Cookies = Retreaver.Base.Cookies;
@@ -893,7 +901,9 @@
     Retreaver.Base.RequestNumber = RequestNumber;
 })();
 
-;window.Retreaver.Cache = {};;(function () {
+;
+window.Retreaver.Cache = {};;
+(function () {
     // Dependencies
     var Base = Retreaver.Base;
     /**
@@ -1117,7 +1127,8 @@
     // always ping active numbers
     ping_active_numbers();
 
-})();;(function() {
+})();;
+(function() {
     // Dependencies
     var RequestNumber = Retreaver.Base.RequestNumber;
     /**
@@ -1466,10 +1477,12 @@
     Campaign.prototype = new Retreaver.Base.Model();
     Retreaver.Campaign = Campaign;
 })();
-;(function (context) {
+;
+(function (context) {
     context.Callpixels = window.Retreaver;
 })(window);
-;/**
+;
+/**
  * findAndReplaceDOMText v 0.4.3
  * @author James Padolsey http://james.padolsey.com
  * @license http://unlicense.org/UNLICENSE
@@ -2096,3 +2109,4 @@ if (typeof(Retreaver.Vendor) === 'undefined') {
   return exposed;
 
 }));
+

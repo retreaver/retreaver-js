@@ -1,7 +1,7 @@
 {
   "name": "retreaver",
   "description": "Retreaver Javascript API",
-  "version": "0.2.25",
+  "version": "0.2.26",
   "homepage": "https://github.com/retreaver/retreaverjs",
   "repository": {
     "type": "git",
@@ -11,24 +11,14 @@
     "url": "https://github.com/retreaver/retreaverjs/issues"
   },
   "author": {
-    "name": "Blake Hilscher",
-    "email": "blake@retreaver.com",
+    "name": "Jason Kay",
+    "email": "support@retreaver.com",
     "url": "http://retreaver.com/"
   },
   "contributors": [
     {
-      "name": "Blake Hilscher",
-      "email": "blake@hilscher.ca",
-      "url": "http://blake.hilscher.ca/"
-    },
-    {
       "name": "Jason Kay",
-      "email": "jason@retreaver.com",
-      "url": "http://retreaver.com/"
-    },
-    {
-      "name": "Ahmed El-Daly",
-      "email": "aeldaly@gmail.com",
+      "email": "support@retreaver.com",
       "url": "http://retreaver.com/"
     }
   ],
@@ -38,22 +28,19 @@
       "url": "http://github.com/retreaver/retreaverjs/blob/master/LICENSE"
     }
   ],
-  "main": "src/package.js",
+  "main": "dist/retreaver.js",
+  "type": "module",
   "engines": {
-    "node": ">= 0.6.x"
+    "node": ">= 22.0.0"
+  },
+  "scripts": {
+    "build": "node build.js",
+    "docs": "jsdoc -c config/jsdocs.json",
+    "clean": "rm -f dist/retreaver.js dist/retreaver.min.js dist/retreaver.temp.js && rm -rf temp"
   },
   "dependencies": {},
   "devDependencies": {
-    "catharsis": "0.9.0",
-    "grunt": "0.4.5",
-    "grunt-contrib-concat": "0.4.0",
-    "grunt-contrib-jshint": "0.10.0",
-    "grunt-contrib-nodeunit": "0.4.1",
-    "grunt-contrib-uglify": "0.5.1",
-    "grunt-contrib-watch": "0.6.1",
-    "jsdoc": "3.2.2",
-    "marked": "4.0.14",
-    "taffydb": "2.7.3",
-    "underscore": "1.13.2"
+    "jsdoc": "4.0.4",
+    "uglify-js": "2.8.29"
   }
 }
