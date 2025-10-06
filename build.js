@@ -2,6 +2,7 @@ import { createRequire } from 'node:module'
 import { mkdir, rm, writeFile, readFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { createHash } from 'node:crypto'
 import UglifyJS from 'uglify-js';
 
 // # Build for development and production
@@ -47,53 +48,79 @@ async function concatenateFilesToString(files) {
     return contents.join(';' + '\n') + '\n'
 }
 
+function createContentHash(content) {
+    return createHash('md5').update(content).digest('hex').substring(0, 8)
+}
+
+async function shouldRebuild(outputPath, newContent) {
+    try {
+        const existingContent = await readFile(outputPath, 'utf8')
+        const existingHash = existingContent.match(/\/\*! .* \| \d{4}-\d{2}-\d{2} \| ([a-f0-9]{8}) \*\//)?.[1]
+        const newHash = createContentHash(newContent)
+        
+        // If no existing hash or hashes don't match, we need to rebuild
+        return !existingHash || existingHash !== newHash
+    } catch (error) {
+        // File doesn't exist or can't be read, so we need to rebuild
+        return true
+    }
+}
+
 async function build() {
     console.log('Building Retreaver.js...')
 
     // Ensure dist directory exists
     await mkdir(distDir, { recursive: true })
 
-    // Clean only the output files we're about to create (preserve /dist/dev and /dist/v1)
-    await Promise.all([
-        rm(resolve(distDir, `${outputName}.js`), { force: true }),
-        rm(resolve(distDir, `${outputName}.min.js`), { force: true })
-    ])
-
     try {
         // Step 1: Concatenate source files in order
         const concatenated = await concatenateFilesToString(sourceFiles)
+        const contentHash = createContentHash(concatenated)
+        
+        const devOutputPath = resolve(distDir, `${outputName}.js`)
+        const minOutputPath = resolve(distDir, `${outputName}.min.js`)
 
-        // Step 2: Create development build (unminified)
-        const today = new Date().toISOString().split('T')[0]
-        const banner = `/*! ${pkg.name} v${pkg.version} | ${today} */`
-        const devContent = `${banner}\n${concatenated}`
-        await writeFile(resolve(distDir, `${outputName}.js`), devContent)
+        // Check if we need to rebuild the development version
+        // We include a hash in the banner and compare it to the existing hash
+        const needsDevRebuild = await shouldRebuild(devOutputPath, concatenated)
+        
+        if (needsDevRebuild) {
+            // Step 2: Create development build (unminified)
+            const today = new Date().toISOString().split('T')[0]
+            const banner = `/*! ${pkg.name} v${pkg.version} | ${today} | ${contentHash} */`
+            const devContent = `${banner}\n${concatenated}`
+            await writeFile(devOutputPath, devContent)
+            console.log(`   Updated dist/${outputName}.js`)
 
-        // Step 3: Create production build (minified)
-        const uglifyResult = UglifyJS.minify(concatenated, {
-            fromString: true, // grunt used this mode
-            compress: {
-                warnings: false, // grunt default
-                dead_code: true,
-                drop_console: false,
-                drop_debugger: true,
-                keep_infinity: true,
-                passes: 1
-            },
-            mangle: {
-                toplevel: false // grunt did NOT mangle toplevel by default
-            },
-            output: {
-                comments: /^!|@preserve/i, // grunt's regex for keeping banners
-                ascii_only: true
-            }
-        })
-        if (uglifyResult.error) throw uglifyResult.error
-        await writeFile(resolve(distDir, `${outputName}.min.js`), `${banner}\n${uglifyResult.code}`)
+            // Step 3: Create production build (minified) - only if dev changed
+            const uglifyResult = UglifyJS.minify(concatenated, {
+                fromString: true, // grunt used this mode
+                compress: {
+                    warnings: false, // grunt default
+                    dead_code: true,
+                    drop_console: false,
+                    drop_debugger: true,
+                    keep_infinity: true,
+                    passes: 1
+                },
+                mangle: {
+                    toplevel: false // grunt did NOT mangle toplevel by default
+                },
+                output: {
+                    comments: /^!|@preserve/i, // grunt's regex for keeping banners
+                    ascii_only: true
+                }
+            })
+            if (uglifyResult.error) throw uglifyResult.error
+            
+            await writeFile(minOutputPath, `${banner}\n${uglifyResult.code}`)
+            console.log(`   Updated dist/${outputName}.min.js`)
+        } else {
+            console.log(`   Skipped dist/${outputName}.js (no changes)`)
+            console.log(`   Skipped dist/${outputName}.min.js (no changes)`)
+        }
 
         console.log('Build complete!')
-        console.log(`   dist/${outputName}.js`)
-        console.log(`   dist/${outputName}.min.js`)
 
     } catch (error) {
         console.error('Build failed:', error)

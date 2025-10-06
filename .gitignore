@@ -25,3 +25,4 @@ tmp
 mkmf.log
 /vendor
 .vscode
+.yarn/install-state.gz
