@@ -4,18 +4,19 @@ module Retreaver
     class << self
       def perform
         Dir.chdir(root) do |f|
-          run("yarn install")
+          run("corepack yarn install")
           # compile src
-          run("yarn build")
-          output = "vendor/assets/javascripts/"
-          FileUtils.rm_rf(output)
-          FileUtils.mkdir_p(output)
-          Dir.glob('dist/*.js') { |f| FileUtils.cp(f, output) }
+
+          run("corepack yarn build")
+          vendor_js_dir = "vendor/assets/javascripts/"
+          FileUtils.rm_rf(vendor_js_dir)
+          FileUtils.mkdir_p(vendor_js_dir)
+          Dir.glob("dist/*.js") { |f| FileUtils.cp(f, vendor_js_dir) }
           # generate jsdocs
-          output = "vendor/documentation/javascripts/"
-          FileUtils.rm_rf(output)
-          FileUtils.mkdir_p(output)
-          run("yarn docs")
+          vendor_js_docs_dir = "vendor/documentation/javascripts/"
+          FileUtils.rm_rf(vendor_js_docs_dir)
+          FileUtils.mkdir_p(vendor_js_docs_dir)
+          run("corepack yarn docs") # output dest is defined in config/jsdocs.json
         end
       end
 
