@@ -1,4 +1,4 @@
-/*! retreaver v0.2.27 | 2025-10-02 */
+/*! retreaver v0.2.27 | 2025-10-02 | 8efc6d42 */
 (function (context) {
     /**
      * @namespace Retreaver

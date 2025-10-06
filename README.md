@@ -1,9 +1,11 @@
-# jsdocs
+# Retreaver.js
+
+## Documentation
 
 https://retreaver.com/documentation/javascript/v1/Retreaver.Number.html
 
 
-# Usage
+## Usage
 
 Include the retreaver.js script on the page.
 
@@ -12,20 +14,20 @@ Include the retreaver.js script on the page.
 ```
 
 
-# Examples
+## Examples
 
 ### Campaign
 
 Initialize a campaign that will return numbers matching home_value:50000
 
 ```javascript
-var campaign = new Retreaver.Campaign({ campaign_key: 'the_key_example' });
+const campaign = new Retreaver.Campaign({ campaign_key: 'the_key_example' });
 ```
 
 Request a number from the campaign matching tags, and use jQuery to display it on the page.
 
 ```javascript
-var tags = { 
+const tags = { 
   home_value: '50000' 
 };
 campaign.request_number(tags, function (number) {
